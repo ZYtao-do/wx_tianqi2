@@ -1,0 +1,55 @@
+name: wx_tianqi
+on:
+  schedule:
+  - cron:  '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  
+  
+jobs:
+  send_message:
+    runs-on: ubuntu-latest
+    name: send morning to your girlfriend
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.6'
+    
+    
+
+    
+    - name: Install dependencies
+      run: |
+        python --version
+        python -m pip install --upgrade pip
+        pip install cryptography-38.0.1-cp36-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+        pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+        pip install wechatpy==1.8.18 -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+        pip install requests==2.25.1 -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+        pip install crypto==1.4.1 -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+        pip install sxtwl -i http://pypi.douban.com/simple --trusted-host pypi.douban.com
+        
+        
+        
+    - name: sender
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.6'
+        architecture: 'x64'
+    - run: python ./tianqi.py
+
+    env:
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_SECRET: ${{ secrets.APP_SECRET }}
+      TEMPLATE_ID: ${{ secrets.TEMPLATE_ID }}
+      USER_ID: ${{ secrets.USER_ID }}
+      USER_ID1: ${{ secrets.USER_ID1 }}
+      START_DATE: ${{ secrets.START_DATE }}
+      BIRTHDAY: ${{ secrets.BIRTHDAY }}
+      CITY: ${{ secrets.CITY }}
